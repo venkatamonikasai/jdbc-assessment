@@ -7,8 +7,6 @@ public interface AuthorDao {
 
     Author create(Author author);
 
-    Author findbyName(String name);
-
     Author findById(Long id);
     
     List<Author> findByGenre(String genre);

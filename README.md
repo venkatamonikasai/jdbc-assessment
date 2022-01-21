@@ -1,6 +1,6 @@
 # Java JDBC Assessment
 
-This assessment is for Java JDBC. Create an authors table using the following SQL query:
+This assessment is for Java JDBC. Create an authors table using the following SQL query: This table will be used to store the authors of the books.
 
 ```sql
     Create table authors (
@@ -13,10 +13,22 @@ This assessment is for Java JDBC. Create an authors table using the following SQ
     );
 ```
 
-Use the following SQL query to insert data into the authors table:
+Use the following SQL queries to build your DAO:
 
 ```sql
-Insert into authors 
-            (id, first_name, last_name, genre, email) 
-            values (?, ?, ?, ?, ?);
+    -- Insert into the Authors table
+    Insert into authors (id, first_name, last_name, genre, email) values (?, ?, ?, ?, ?);
+
+    -- Select from the Authors table
+    Select * from authors;
+
+    -- Select author by id
+    Select * from authors where id = ?;
+
+    -- Select authors by genre
+    Select * from authors where genre = ?;
 ```
+
+The Modal class is created and so is the DAO layer. Add implementation to the DAO layer and use JDBC to connect to the database.
+
+Make sure the POM file is prepared for the project including all the necessary dependancies.
