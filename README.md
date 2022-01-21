@@ -2,6 +2,8 @@
 
 This assessment is for Java JDBC. Create an authors table using the following SQL query: This table will be used to store the authors of the books.
 
+Please fork this repo to your github account and then clone to your local machine. Make the changes there and then push to your github account.
+
 ```sql
     Create table authors (
         id int not null auto_increment,
