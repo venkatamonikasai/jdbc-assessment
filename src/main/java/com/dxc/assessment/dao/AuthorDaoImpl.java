@@ -2,92 +2,116 @@ package com.dxc.assessment.dao;
 
 import java.util.List;
 import com.dxc.assessment.modal.Author;
+import java.util.List;
+import com.dxc.assessment.modal.Author;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sql.DataSource;
 
 public class AuthorDaoImpl implements AuthorDao{
-	import java.util.List;
-	import com.dxc.assessment.modal.Author;
-	import java.sql.Connection;
-	import java.sql.PreparedStatement;
-	import java.sql.ResultSet;
-	import java.sql.SQLException;
-	import java.sql.Statement;
-	import java.util.ArrayList;
-	import java.util.List;
-	import javax.sql.DataSource;
 
 
-	public class AuthorDaoImpl implements AuthorDao{
+        @Override
+        public Author create(Author author) {
+        	try{  
+        		
+        		conn =DriverManager.getConnection("jdbc:mysql://localhost/test?" +
+        			                                   "user=minty&password=greatsqldb");
+        		// Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","oracle");  
+        		  
+        		PreparedStatement stmt=conn.prepareStatement("insert into Author values(?,?,?,?,?)");  
+        		stmt.setInt(1,10);//1 specifies the first parameter in the query  
+        		stmt.setString(2,"abc"); 
+        		stmt.setString(3,"bcd");  
+        		stmt.setString(4,"abc");  
+        		stmt.setString(5,"abc");  
+        		  
+        		int i=stmt.executeUpdate();  
+        		System.out.println(i+" records inserted");  
+        		  
+        		conn.close();  
+        		  
+        		}catch(Exception e){ System.out.println(e);}  
+        		  
+        		}  
+            return null;
+        }
 
-	    private DataSource dataSource;
+        @Override
+        public Author findById(Long id) {
+        	conn =
+    				DriverManager.getConnection("jdbc:mysql://localhost/test?" +
+    												"user=minty&password=greatsqldb");
+        	pstmt = conn.prepareStatement( "SELECT * FROM Author WHERE ID=?"); 
+        			                                  // Create a PreparedStatement object    1 
+        			pstmt.setInt(1,10);      // Assign value to input parameter      2 
 
-	    private static final String INSERT_ONE_AUTHOR;
+        			rs = pstmt.executeQuery();        // Get the result table from the query  3 
+        			while (rs.next()) {               // Position the cursor                  4 
+        			 int autId = rs.getInt(1);        // Retrieve the first column value
+        			 String authFirstName = rs.getString(2);   
+        			 String authLastName = rs.getString(3); 
+        			 String authgenre = rs.getString(4); 
+        			 String authEmail = rs.getString(5); 
+        			 System.out.println("AutID = " + autId + "firstname = " + authFirstName + "lastname = " + authLastName + "genre = " + authgenre +"email = " + authEmail);
+        			                                  // Print the column values
+        			}
+        			rs.close();                       // Close the ResultSet                  5 
+        			pstmt.close();   
+            return null;
+        }
 
-	    private static final String SELECT_ALL_AUTHOR;
+        @Override
+        public List<Author> findByGenre(String genre) {
+        	
+        	pstmt = conn.prepareStatement( "SELECT * FROM Author WHERE genre=?"); 
+      			                                  // Create a PreparedStatement object    1 
+      			pstmt.setString(4,abc);      // Assign value to input parameter      2 
 
+      			rs = pstmt.executeQuery();        // Get the result table from the query  3 
+      			while (rs.next()) {               // Position the cursor                  4 
+      			 int autId = rs.getInt(1);        // Retrieve the first column value
+      			 String authFirstName = rs.getString(2);   
+      			 String authLastName = rs.getString(3); 
+      			 String authgenre = rs.getString(4); 
+      			 String authEmail = rs.getString(5); 
+      			 System.out.println("AutID = " + autId + "firstname = " + authFirstName + "lastname = " + authLastName + "genre = " + authgenre + "email = " + authEmail);
+      			                                  // Print the column values
+      			}
+      			rs.close();                       // Close the ResultSet                  5 
+      			pstmt.close();
+            return null;
+        }
 
-	    static {
-	        INSERT_ONE_AUTHOR = "INSERT INTO authors (id, first_name, last_name, genre, email) VALUES (?, ?, ?)";
-	        SELECT_ALL_AUTHOR = "SELECT * FROM authors";
-	    }
-
-
-	    @Override
-	    public int save(Author author) throws SQLException {
-	        Connection connection = dataSource.getConnection();
-	        PreparedStatement ps = connection.prepareStatement(INSERT_ONE_AUTHOR);
-	        ps.setString(1, author.getId());
-	        ps.setString(2, author.getFirst_Name());
-	        ps.setString(3, author.getLast_Name());
-	        ps.setString(3, author.getGenre());
-	        ps.setString(3, author.getEmail());
-	        int rows = 0;
-	        rows = ps.executeUpdate();
-
-	        ps.close();
-	        connection.close();
-	        return rows;
-	        return null;
-	    }
-
-	    @Override
-	    public Author findById(Long id) {
-	        return null;
-	    }
-
-	    @Override
-	    public List<Author> findByGenre(String genre) {
-	        return null;
-	    }
-
-	        @Override
-	        public List<Author> findAll() throws SQLException {
-	    
-	            Connection connection = dataSource.getConnection();
-	            List<Author> authors;
-	            Statement statement = connection.createStatement();
-	            ResultSet rs = statement.executeQuery(SELECT_ALL_AUTHOR);
-	            authors = new ArrayList();
-	            while (rs.next()) {
-	                authors.add(new Author(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
-	            }
-	            rs.close();
-	            statement.close();
-	            connection.close();
-	            return authors;
-	        }
-	        return null;
-	}
-	
-	
-		
-	 @Override
-    public Author create(Author author) {
-        return null;
+        @Override
+        public List<Author> findAll() {
+        	pstmt = conn.prepareStatement("SELECT * FROM Author);   			                                  // Assign value to input parameter      2 
+        			rs = pstmt.executeQuery();        // Get the result table from the query  3 
+        			while (rs.next()) {               // Position the cursor                  4 
+        			 int autId = rs.getInt(1);        // Retrieve the first column value
+        			 String authFirstName = rs.getString(2);   
+        			 String authLastName = rs.getString(3); 
+        			 String authgenre = rs.getString(4); 
+        			 String authEmail = rs.getString(5); 
+        			 System.out.println("AutID = " + autId + "firstname = " + authFirstName + "lastname = " + authLastName + "genre = " + authgenre + "email = " + authEmail);
+                                       // Print the column values
+        			}
+        			rs.close();              // Close the ResultSet                  5 
+        			pstmt.close();
+            return null;
+        }
+        
     }
-
-    @Override
-    public Author findById(Long id) {
-        return null;
-    }
-
+    
+   
+    
+    
+    
+    
+    
     
